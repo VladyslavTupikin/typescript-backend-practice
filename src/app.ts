@@ -2,6 +2,7 @@ import sqlite3 from "sqlite3";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
+import { ReadAllProducts } from "./handlers/read-all.handler.js";
 
 export class Application {
   private appHono: Hono;
@@ -18,13 +19,16 @@ export class Application {
 
   private Initialize(): void {
     this.appHono.use(
-      "/products/*",
+      "*",
       cors({
-        origin: `${this.host}:${this.clientPort}`,
+        origin: `http://${this.host}:${this.clientPort}`,
         allowMethods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         allowHeaders: ["Content-Type"],
       }),
     );
+
+    const readAll = new ReadAllProducts(this.db);
+    this.appHono.get("/products", readAll.handle.bind(readAll));
   }
 
   public Run(): void {

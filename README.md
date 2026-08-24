@@ -29,10 +29,16 @@ Make sure you have [Node.js](https://nodejs.org) installed (Version 26+ recommen
   npm run build
   ```
 
-- **Start the application:** Runs the compiled production code.
+- **Start the application** Runs the compiled production code using .env file otherwise with default parameters.
 
   ```bash
   npm start
+  ```
+
+- **Start the application with arguments**
+
+  ```bash
+  npm start -- -h "192.168.1.1" -p "5000" -cp "3000"
   ```
 
 - **Watch mode (Optional):** Automatically recompiles your files every time you hit save.
