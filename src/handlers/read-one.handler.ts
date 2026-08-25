@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import { RestHandler } from "./types.js";
+import { RestHandler } from "./rest-handler.js";
 import sqlite3 from "sqlite3";
 import { HttpStatusCode } from "./http-status-codes.js";
 
