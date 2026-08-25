@@ -4,6 +4,7 @@ import { cors } from "hono/cors";
 import { serve } from "@hono/node-server";
 import { ReadAllProducts } from "./handlers/read-all.handler.js";
 import { ReadOneProduct } from "./handlers/read-one.handler.js";
+import { CreateProduct } from "./handlers/create-product.js";
 
 export class Application {
   private appHono: Hono;
@@ -33,6 +34,9 @@ export class Application {
 
     const readOne = new ReadOneProduct(this.db);
     this.appHono.get("/products/:id", readOne.handle.bind(readOne));
+
+    const createProduct = new CreateProduct(this.db);
+    this.appHono.post("/products", createProduct.handle.bind(createProduct));
   }
 
   public Run(): void {
