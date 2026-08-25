@@ -19,10 +19,12 @@ export class ReadOneProduct implements RestHandler {
               HttpStatusCode.INTERNAL_SERVER_ERROR,
             ),
           );
+          return;
         }
 
         if (!rows || rows.length == 0) {
           resolve(c.json(HttpStatusCode.NOT_FOUND));
+          return;
         }
 
         resolve(c.json(rows));

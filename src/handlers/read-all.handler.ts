@@ -18,6 +18,7 @@ export class ReadAllProducts implements RestHandler {
               HttpStatusCode.INTERNAL_SERVER_ERROR,
             ),
           );
+          return;
         }
         resolve(c.json(rows));
       };
