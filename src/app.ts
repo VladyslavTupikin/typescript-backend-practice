@@ -51,4 +51,8 @@ export class Application {
       },
     );
   }
+
+  public get app(): Hono {
+    return this.appHono;
+  }
 }
