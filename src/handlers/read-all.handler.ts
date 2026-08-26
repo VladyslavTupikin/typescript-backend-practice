@@ -1,7 +1,7 @@
 import { Context } from "hono";
 import { RestHandler } from "./rest-handler.js";
 import sqlite3 from "sqlite3";
-import { HttpStatusCode } from "./http-status-codes.js";
+import { HttpStatusCode } from "../http-status-codes.js";
 
 export class ReadAllProducts implements RestHandler {
   constructor(private db: sqlite3.Database) {}

@@ -1,7 +1,7 @@
 import { Context } from "hono";
 import { RestHandler } from "./rest-handler.js";
 import sqlite3, { RunResult } from "sqlite3";
-import { HttpStatusCode } from "./http-status-codes.js";
+import { HttpStatusCode } from "../http-status-codes.js";
 
 export class CreateProduct implements RestHandler {
   constructor(private db: sqlite3.Database) {}
@@ -10,8 +10,12 @@ export class CreateProduct implements RestHandler {
     const body = await c.req.json<{ name: string; price: number }>();
 
     return new Promise((resolve) => {
-      if (!body.name || !body.price) {
-        console.log(`${body}`);
+      const isNameInvalid =
+        typeof body.name !== "string" || body.name.trim() === "";
+      const isPriceInvalid =
+        typeof body.price !== "number" || Number.isNaN(body.price);
+
+      if (isNameInvalid || isPriceInvalid) {
         resolve(
           c.json({ error: "Invalid data format" }, HttpStatusCode.BAD_REQUEST),
         );
@@ -19,7 +23,7 @@ export class CreateProduct implements RestHandler {
       }
 
       const sqlQuery = `INSERT INTO products (name,price) VALUES(?,?)`;
-      const dbCallback = function (this: RunResult, err: Error) {
+      const dbCallback = function (this: RunResult, err: Error | null) {
         if (err) {
           resolve(
             c.json(

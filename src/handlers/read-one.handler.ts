@@ -1,7 +1,7 @@
 import { Context } from "hono";
 import { RestHandler } from "./rest-handler.js";
 import sqlite3 from "sqlite3";
-import { HttpStatusCode } from "./http-status-codes.js";
+import { HttpStatusCode } from "../http-status-codes.js";
 
 export class ReadOneProduct implements RestHandler {
   constructor(private db: sqlite3.Database) {}
@@ -23,7 +23,9 @@ export class ReadOneProduct implements RestHandler {
         }
 
         if (!rows || rows.length == 0) {
-          resolve(c.json(HttpStatusCode.NOT_FOUND));
+          resolve(
+            c.json({ error: "Product not found" }, HttpStatusCode.NOT_FOUND),
+          );
           return;
         }
 
