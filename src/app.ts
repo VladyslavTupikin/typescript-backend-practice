@@ -9,6 +9,7 @@ import { ReadAllProducts } from "./handlers/read-all.handler.js";
 import { ReadOneProduct } from "./handlers/read-one.handler.js";
 import { CreateProduct } from "./handlers/create-product.js";
 import { UpdateProduct } from "./handlers/update.handler.js";
+import { DeleteProduct } from "./handlers/delete-product.js";
 
 export class Application {
   private appHono: Hono;
@@ -46,6 +47,12 @@ export class Application {
     this.appHono.patch(
       "/products/:id",
       updateProduct.handle.bind(updateProduct),
+    );
+
+    const deleteProduct = new DeleteProduct(this.db);
+    this.appHono.delete(
+      "/products/:id",
+      deleteProduct.handle.bind(deleteProduct),
     );
   }
 
