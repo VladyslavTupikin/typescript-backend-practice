@@ -5,6 +5,7 @@ import { serve } from "@hono/node-server";
 import { ReadAllProducts } from "./handlers/read-all.handler.js";
 import { ReadOneProduct } from "./handlers/read-one.handler.js";
 import { CreateProduct } from "./handlers/create-product.js";
+import { UpdateProduct } from "./handlers/update.handler.js";
 
 export class Application {
   private appHono: Hono;
@@ -37,6 +38,12 @@ export class Application {
 
     const createProduct = new CreateProduct(this.db);
     this.appHono.post("/products", createProduct.handle.bind(createProduct));
+
+    const updateProduct = new UpdateProduct(this.db);
+    this.appHono.patch(
+      "/products/:id",
+      updateProduct.handle.bind(updateProduct),
+    );
   }
 
   public Run(): void {
