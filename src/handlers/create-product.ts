@@ -9,11 +9,14 @@ export class CreateProduct implements RestHandler {
   async handle(c: Context): Promise<Response> {
     const body = await c.req.json<{ name: string; price: number }>();
 
+    // Since body object received all params as json they are strings,
+    // need to directly convert price to Number
+    body.price = Number(body.price);
+
     return new Promise((resolve) => {
       const isNameInvalid =
         typeof body.name !== "string" || body.name.trim() === "";
-      const isPriceInvalid =
-        typeof body.price !== "number" || Number.isNaN(body.price);
+      const isPriceInvalid = Number.isNaN(body.price);
 
       if (isNameInvalid || isPriceInvalid) {
         resolve(
