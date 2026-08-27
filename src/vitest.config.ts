@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Vladyslav Tupikin
+// SPDX-License-Identifier: ISC
+
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({

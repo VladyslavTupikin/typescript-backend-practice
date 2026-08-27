@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Vladyslav Tupikin
+// SPDX-License-Identifier: ISC
+
 export enum HttpStatusCode {
   OK = 200,
   CREATED = 201,

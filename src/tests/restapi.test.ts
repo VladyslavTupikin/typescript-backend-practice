@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Vladyslav Tupikin
+// SPDX-License-Identifier: ISC
+
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { Application } from "../app.js";
 import sqlite3 from "sqlite3";

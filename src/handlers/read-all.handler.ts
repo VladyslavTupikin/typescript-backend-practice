@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Vladyslav Tupikin
+// SPDX-License-Identifier: ISC
+
 import { Context } from "hono";
 import { RestHandler } from "./rest-handler.js";
 import sqlite3 from "sqlite3";

@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Vladyslav Tupikin
+// SPDX-License-Identifier: ISC
+
 import { Application } from "./app.js";
 import sqlite3 from "sqlite3";
 import process from "node:process";

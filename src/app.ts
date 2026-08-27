@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Vladyslav Tupikin
+// SPDX-License-Identifier: ISC
+
 import sqlite3 from "sqlite3";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
