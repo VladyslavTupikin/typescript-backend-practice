@@ -10,6 +10,7 @@ import { ReadOneProduct } from "./handlers/read-one.handler.js";
 import { CreateProduct } from "./handlers/create-product.js";
 import { UpdateProduct } from "./handlers/update.handler.js";
 import { DeleteProduct } from "./handlers/delete-product.js";
+import { isIPv4 } from "node:net";
 
 export class Application {
   private appHono: Hono;
@@ -19,6 +20,25 @@ export class Application {
     private port: number = 5000,
     private clientPort: number = 3000,
   ) {
+    if (!db) {
+      throw new Error("Error: Invalid database parameter.");
+    }
+
+    if (!isIPv4(host)) {
+      throw new Error("Error: invalid IPv4 address.");
+    }
+
+    const portMax = 65535;
+    const arePortsValidNumber = [port, clientPort].every(
+      (p) => p > 0 && p <= portMax,
+    );
+
+    if (!arePortsValidNumber) {
+      throw new Error(
+        `Error: port: ${port} or client_port: ${clientPort} is out of range from 1 to 65535`,
+      );
+    }
+
     this.appHono = new Hono();
 
     this.Initialize();
