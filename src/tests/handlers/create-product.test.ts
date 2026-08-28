@@ -78,7 +78,7 @@ describe("REST API: POST", () => {
     });
 
     const expected = {
-      error: "Invalid data format",
+      error: "Invalid data format.",
     };
 
     expect(res.status).toBe(HttpStatusCode.BAD_REQUEST);
@@ -97,7 +97,7 @@ describe("REST API: POST", () => {
     });
 
     const expected = {
-      error: "Invalid data format",
+      error: "Invalid data format.",
     };
 
     expect(res.status).toBe(HttpStatusCode.BAD_REQUEST);
@@ -116,7 +116,7 @@ describe("REST API: POST", () => {
     });
 
     const expected = {
-      error: "Invalid data format",
+      error: "Invalid data format.",
     };
 
     expect(res.status).toBe(HttpStatusCode.BAD_REQUEST);
@@ -135,7 +135,7 @@ describe("REST API: POST", () => {
     });
 
     const expected = {
-      error: "Invalid data format",
+      error: "Invalid data format.",
     };
 
     expect(res.status).toBe(HttpStatusCode.BAD_REQUEST);
@@ -162,9 +162,26 @@ describe("REST API: POST", () => {
     expect(res.status).toBe(HttpStatusCode.INTERNAL_SERVER_ERROR);
 
     expect(await res.json()).toEqual({
-      error: "SQLITE_ERROR: database disk image is malformed",
+      error: "Internal server error.",
     });
 
     vi.restoreAllMocks();
+  });
+
+  it("POST /products - should return BAD_REQUEST (400) when body is invalid JSON message", async () => {
+    const payload = '{ "name": "Bread", "price": 3.55 ';
+
+    const res = await app.app.request("/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+    });
+
+    const expected = {
+      error: "Invalid data format.",
+    };
+
+    expect(res.status).toBe(HttpStatusCode.BAD_REQUEST);
+    expect(await res.json()).toEqual(expected);
   });
 });

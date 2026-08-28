@@ -10,7 +10,16 @@ export class CreateProduct implements RestHandler {
   constructor(private db: sqlite3.Database) {}
 
   async handle(c: Context): Promise<Response> {
-    const body = await c.req.json<{ name: string; price: number }>();
+    let body;
+
+    try {
+      body = await c.req.json<{ name: string; price: number }>();
+    } catch (err) {
+      return c.json(
+        { error: "Invalid data format." },
+        HttpStatusCode.BAD_REQUEST,
+      );
+    }
 
     // Since body object received all params as json they are strings,
     // need to directly convert price to Number
@@ -23,7 +32,7 @@ export class CreateProduct implements RestHandler {
 
       if (isNameInvalid || isPriceInvalid) {
         resolve(
-          c.json({ error: "Invalid data format" }, HttpStatusCode.BAD_REQUEST),
+          c.json({ error: "Invalid data format." }, HttpStatusCode.BAD_REQUEST),
         );
         return;
       }
@@ -33,7 +42,7 @@ export class CreateProduct implements RestHandler {
         if (err) {
           resolve(
             c.json(
-              { error: err.message },
+              { error: "Internal server error." },
               HttpStatusCode.INTERNAL_SERVER_ERROR,
             ),
           );
