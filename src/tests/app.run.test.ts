@@ -10,7 +10,7 @@ vi.mock("@hono/node-server", () => ({
   serve: vi.fn(),
 }));
 
-describe("Application.Run", () => {
+describe("Application - Run()", () => {
   let appInstance: Application;
 
   beforeEach(() => {
