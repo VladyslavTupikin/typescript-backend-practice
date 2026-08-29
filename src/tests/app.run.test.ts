@@ -16,7 +16,7 @@ describe("Application - Run()", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     const mockDb = {} as any;
-    appInstance = new Application(mockDb, "127.0.0.1", 5000, 3000);
+    appInstance = new Application(mockDb, "127.0.0.1", 5000, "127.0.0.1", 3000);
   });
 
   it("passes correct configuration to serve()", () => {

@@ -16,16 +16,19 @@ export class Application {
   private appHono: Hono;
   constructor(
     private db: sqlite3.Database,
-    private host: string = "127.0.0.1",
+    private server: string = "127.0.0.1",
     private port: number = 5000,
+    private client: string = "127.0.0.1",
     private clientPort: number = 3000,
   ) {
     if (!db) {
       throw new Error("Error: Invalid database parameter.");
     }
 
-    if (!isIPv4(host)) {
-      throw new Error("Error: invalid IPv4 address.");
+    if (!isIPv4(server) || !isIPv4(client)) {
+      throw new Error(
+        `Error: invalid IPv4 address: server -  ${server} client - ${client}.`,
+      );
     }
 
     const portMax = 65535;
@@ -48,7 +51,7 @@ export class Application {
     this.appHono.use(
       "*",
       cors({
-        origin: `http://${this.host}:${this.clientPort}`,
+        origin: `http://${this.client}:${this.clientPort}`,
         allowMethods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
         allowHeaders: ["Content-Type"],
       }),
@@ -81,7 +84,7 @@ export class Application {
       {
         fetch: this.appHono.fetch,
         port: this.port,
-        hostname: this.host,
+        hostname: this.server,
       },
       (info) => {
         console.log(`Server running ${info.address}:${info.port}`);

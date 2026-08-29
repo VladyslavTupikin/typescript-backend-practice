@@ -11,26 +11,27 @@ describe("Application - CORS Middleware", () => {
   let appInstance: Application;
   let db: sqlite3.Database;
 
-  const hostIP = "127.0.0.1";
+  const serverIP = "127.0.0.1";
   const port = 5000;
+  const clientIP = "127.0.0.2";
   const clientPort = 3000;
 
   beforeEach(() => {
     db = new sqlite3.Database(":memory:");
     // Client configured at port 3000
-    appInstance = new Application(db, hostIP, port, clientPort);
+    appInstance = new Application(db, serverIP, port, clientIP, clientPort);
   });
 
   it("allows requests from the configured client port origin", async () => {
     const res = await appInstance.app.request("/products", {
       method: "GET",
       headers: {
-        Origin: `http://${hostIP}:${clientPort}`,
+        Origin: `http://${clientIP}:${clientPort}`,
       },
     });
 
     expect(res.headers.get("Access-Control-Allow-Origin")).toBe(
-      `http://${hostIP}:${clientPort}`,
+      `http://${clientIP}:${clientPort}`,
     );
   });
 
@@ -38,14 +39,14 @@ describe("Application - CORS Middleware", () => {
     const res = await appInstance.app.request("/products", {
       method: "OPTIONS",
       headers: {
-        Origin: `http://${hostIP}:${clientPort}`,
+        Origin: `http://${clientIP}:${clientPort}`,
         "Access-Control-Request-Method": "POST",
       },
     });
 
     expect(res.status).toBe(HttpStatusCode.NO_CONTENT);
     expect(res.headers.get("Access-Control-Allow-Origin")).toBe(
-      `http://${hostIP}:${clientPort}`,
+      `http://${clientIP}:${clientPort}`,
     );
   });
 

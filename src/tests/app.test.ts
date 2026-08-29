@@ -15,7 +15,7 @@ describe("Application", () => {
 
   it("should success when proper parameters passed to the constructor", async () => {
     const db = new sqlite3.Database(":memory:");
-    const app = new Application(db, "192.168.1.2", 5000, 3000);
+    const app = new Application(db, "192.168.1.2", 5000, "192.168.1.3", 3000);
 
     expect(app).instanceOf(Application);
   });
@@ -23,14 +23,16 @@ describe("Application", () => {
   it("should throw error when invalid IPv4 passed to the constructor", async () => {
     const invalidIPv4 = "257.786.12.21";
     const port = 4000;
+    const validIPv4 = "127.0.0.1";
     const clientPort = 6000;
     const db = new sqlite3.Database(":memory:");
 
-    const expectedMessage = "Error: invalid IPv4 address.";
+    const expectedMessage =
+      "Error: invalid IPv4 address: server -  257.786.12.21 client - 127.0.0.1.";
 
-    expect(() => new Application(db, invalidIPv4, port, clientPort)).toThrow(
-      expectedMessage,
-    );
+    expect(
+      () => new Application(db, invalidIPv4, port, validIPv4, clientPort),
+    ).toThrow(expectedMessage);
   });
 
   it("should throw error when invalid database passed to the constructor", async () => {
@@ -46,6 +48,7 @@ describe("Application", () => {
           null as unknown as sqlite3.Database,
           validIPv4,
           port,
+          validIPv4,
           clientPort,
         ),
     ).toThrow(expectedMessage);
@@ -56,6 +59,7 @@ describe("Application", () => {
           undefined as unknown as sqlite3.Database,
           validIPv4,
           port,
+          validIPv4,
           clientPort,
         ),
     ).toThrow(expectedMessage);
@@ -71,7 +75,7 @@ describe("Application", () => {
       "Error: port: 67898 or client_port: 6000 is out of range from 1 to 65535";
 
     expect(
-      () => new Application(db, validIPv4, invalidPort, clientPort),
+      () => new Application(db, validIPv4, invalidPort, validIPv4, clientPort),
     ).toThrow(expectedMessage);
   });
 
@@ -85,7 +89,8 @@ describe("Application", () => {
       "Error: port: 5000 or client_port: 89765 is out of range from 1 to 65535";
 
     expect(
-      () => new Application(db, validIPv4, validPort, invalidClientPort),
+      () =>
+        new Application(db, validIPv4, validPort, validIPv4, invalidClientPort),
     ).toThrow(expectedMessage);
   });
 });

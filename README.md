@@ -35,10 +35,10 @@ Make sure you have [Node.js](https://nodejs.org) installed (Version 26+ recommen
   npm start
   ```
 
-- **Start the application with arguments**
+- **Start the application with arguments** Where `server ip/port` - address and port for the backend, `client ip/port` - address and port used by CORS for client connection. If one or more parameters skipped and `.env` file was not provided, default values will be used.
 
   ```bash
-  npm start -- -h "192.168.1.1" -p "5000" -cp "3000"
+  npm start -- --server_ip "192.168.1.1" --server_port "5000" client_ip "192.168.1.2" --client_port "3000"
   ```
 
 - **Watch mode (Optional):** Automatically recompiles your files every time you hit save.
